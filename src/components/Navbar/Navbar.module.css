@@ -1,0 +1,604 @@
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 100;
+}
+
+.logoSection {
+  flex-shrink: 0;
+}
+
+.title {
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+/* Desktop Navigation */
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navLink:hover {
+  color: crimson;
+  background: rgba(220, 20, 60, 0.05);
+  transform: translateY(-1px);
+}
+
+.activeNavLink {
+  color: crimson;
+  background: rgba(220, 20, 60, 0.1);
+  font-weight: 600;
+}
+
+.activeNavLink::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: crimson;
+  border-radius: 1px;
+}
+
+/* Attendance Dropdown */
+.attendanceContainer {
+  position: relative;
+}
+
+.attendanceDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+.attendanceItem {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  color: #333;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.attendanceItem:hover {
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+}
+
+/* Logout Section */
+.logoutContainer {
+  position: relative;
+}
+
+.userButton {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.userButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(220, 20, 60, 0.3);
+}
+
+.userIcon {
+  font-size: 16px;
+}
+
+.userName {
+  font-size: 13px;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  font-size: 10px;
+}
+
+.arrowUp {
+  transform: rotate(180deg);
+}
+
+.logoutDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 140px;
+  overflow: hidden;
+}
+
+.logoutItem {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  color: #333;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.logoutItem:hover {
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+}
+
+/* Mobile Navigation */
+.mobileNav {
+  display: none;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.hamburgerLine {
+  width: 24px;
+  height: 3px;
+  background: crimson;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 100000;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobileMenu {
+  background: #ffffff;
+  width: 280px;
+  height: 100%;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+  animation: slideInRight 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e0e0e0;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobileMenuHeader {
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+}
+
+.mobileMenuHeader h3 {
+  color: crimson;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(220, 20, 60, 0.1);
+  color: crimson;
+}
+
+.mobileMenuContent {
+  background: #ffffff;
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.mobileNavLink:hover {
+  background: rgba(220, 20, 60, 0.05);
+  color: crimson;
+  border-color: rgba(220, 20, 60, 0.2);
+}
+
+.activeMobileNavLink {
+  background: rgba(220, 20, 60, 0.1);
+  color: crimson;
+  font-weight: 600;
+  border-color: rgba(220, 20, 60, 0.3);
+}
+
+/* Mobile Attendance Dropdown */
+.mobileAttendanceSection {
+  position: relative;
+}
+
+.mobileArrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+  font-size: 10px;
+}
+
+.mobileArrowUp {
+  transform: rotate(180deg);
+}
+
+.mobileAttendanceDropdown {
+  margin-left: 20px;
+  margin-top: 8px;
+  border-left: 2px solid rgba(220, 20, 60, 0.3);
+  padding-left: 16px;
+}
+
+.mobileAttendanceItem {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  color: #666;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  margin-bottom: 4px;
+}
+
+.mobileAttendanceItem:hover {
+  background: rgba(220, 20, 60, 0.05);
+  color: crimson;
+}
+
+.mobileLogoutSection {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobileLogoutButton {
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobileLogoutButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(220, 20, 60, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 16px 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileNav {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .mobileMenu {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .mobileMenuHeader {
+    padding: 16px;
+  }
+
+  .mobileMenuHeader h3 {
+    font-size: 16px;
+  }
+
+  .mobileMenuContent {
+    padding: 16px;
+  }
+
+  .mobileNavLink {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .mobileLogoutButton {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+
+/* Focus styles for accessibility */
+.navLink:focus,
+.userButton:focus,
+.hamburger:focus,
+.mobileNavLink:focus,
+.mobileLogoutButton:focus {
+  outline: 2px solid crimson;
+  outline-offset: 2px;
+}
+
+/* Animation for active nav indicator */
+.activeNavLink::after {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 20px;
+    opacity: 1;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: rgba(30, 30, 30, 0.95);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .title {
+    color: #f0f0f0;
+  }
+
+  .navLink {
+    color: #ccc;
+  }
+
+  .navLink:hover {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .activeNavLink {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+  }
+
+  .mobileMenu {
+    background: #1a1a1a;
+    border-left: 1px solid #333;
+  }
+
+  .mobileMenuHeader {
+    background: #2a2a2a;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .mobileMenuHeader h3 {
+    color: #ff6b6b;
+  }
+
+  .closeButton {
+    color: #ccc;
+  }
+
+  .closeButton:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+  }
+
+  .mobileNavLink {
+    color: #ccc;
+  }
+
+  .mobileNavLink:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.3);
+  }
+
+  .activeMobileNavLink {
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.4);
+  }
+
+  .mobileLogoutSection {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .logoutDropdown {
+    background: rgba(30, 30, 30, 0.95);
+  }
+
+  .logoutItem {
+    color: #ccc;
+  }
+
+  .logoutItem:hover {
+    background: linear-gradient(135deg, #ff6b6b 0%, #e74c3c 100%);
+    color: white;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .userButton,
+  .hamburger,
+  .hamburgerLine,
+  .arrow,
+  .mobileNavLink,
+  .mobileLogoutButton {
+    transition: none;
+  }
+
+  .mobileMenuOverlay,
+  .mobileMenu,
+  .activeNavLink::after {
+    animation: none;
+  }
+
+  .navLink:hover {
+    transform: none;
+  }
+
+  .userButton:hover,
+  .mobileLogoutButton:hover {
+    transform: none;
+  }
+}

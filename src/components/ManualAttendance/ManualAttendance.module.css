@@ -1,0 +1,425 @@
+.manualAttendanceContainer {
+  min-height: 80vh;
+  padding: 20px;
+}
+
+/* Add Manual Button */
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.addManualButton {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+}
+
+.addManualButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
+}
+
+/* Form Container */
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  padding: 20px 0;
+}
+
+.formCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(220, 20, 60, 0.1);
+}
+
+.formTitle {
+  color: crimson;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* Form Styles */
+.attendanceForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.input,
+.select {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: crimson;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}
+
+.inputError {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Time Input Group */
+.timeGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeInputGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.timeInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.timeInput:focus {
+  outline: none;
+  border-color: crimson;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}
+
+.ampmSelect {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.ampmSelect:focus {
+  outline: none;
+  border-color: crimson;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}
+
+/* Button Group */
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancelButton {
+  padding: 12px 24px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+.addButton {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+}
+
+.addButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+/* Confirmation Modal */
+.confirmationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.confirmationModal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.confirmationHeader {
+  padding: 24px 24px 16px;
+  border-bottom: 2px solid rgba(220, 20, 60, 0.1);
+  text-align: center;
+}
+
+.confirmationTitle {
+  color: crimson;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.confirmationContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirmationField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid crimson;
+}
+
+.confirmationField strong {
+  color: #374151;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.manualBadge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confirmationButtons {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  justify-content: flex-end;
+  border-top: 1px solid #e5e7eb;
+}
+
+.confirmationCancelButton {
+  padding: 12px 24px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirmationCancelButton:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+.confirmationAddButton {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+}
+
+.confirmationAddButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .manualAttendanceContainer {
+    padding: 16px;
+  }
+
+  .formCard {
+    padding: 24px 20px;
+    margin: 0 16px;
+  }
+
+  .formTitle {
+    font-size: 24px;
+  }
+
+  .timeInputGroup {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ampmSelect {
+    min-width: 100%;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cancelButton,
+  .addButton {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .confirmationModal {
+    margin: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .confirmationField {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .confirmationField strong {
+    min-width: auto;
+  }
+
+  .confirmationButtons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .confirmationCancelButton,
+  .confirmationAddButton {
+    width: 100%;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .addManualButton {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+
+  .formCard {
+    padding: 20px 16px;
+  }
+
+  .input,
+  .select,
+  .timeInput {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+.textarea {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: crimson;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}

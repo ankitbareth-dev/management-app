@@ -1,0 +1,629 @@
+.dashboardContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.mainContent {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  border: 1px solid rgba(220, 20, 60, 0.1);
+}
+
+.welcomeContent h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcomeSubtitle {
+  margin: 8px 0 0 0;
+  color: #718096;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.currentTime {
+  text-align: right;
+}
+
+.timeDisplay {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2d3748;
+  font-family: "Courier New", monospace;
+  margin-bottom: 8px;
+}
+
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.statusDot.checkedIn {
+  background-color: #48bb78;
+}
+
+.statusDot.checkedOut {
+  background-color: #ed8936;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+  }
+}
+
+/* Current Status Card */
+.currentStatusCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.statusHeader h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.liveIndicator {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+}
+
+.statusDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statusLabel {
+  font-size: 14px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.statusValue {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.metricCard {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(220, 20, 60, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metricCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+}
+
+.metricCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(220, 20, 60, 0.15);
+}
+
+.metricCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.metricIcon {
+  font-size: 32px;
+  padding: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(220, 20, 60, 0.1) 0%,
+    rgba(185, 28, 60, 0.1) 100%
+  );
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.metricContent {
+  flex: 1;
+}
+
+.metricValue {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.metricLabel {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.metricSubtext {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* Activities Section */
+.activitiesSection {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(220, 20, 60, 0.1);
+}
+
+.sectionHeader {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f7fafc;
+}
+
+.sectionTitle {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.sectionSubtitle {
+  color: #718096;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.noActivities {
+  text-align: center;
+  padding: 60px 20px;
+  color: #718096;
+}
+
+.noActivitiesIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.noActivities h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.noActivities p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.activitiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activityItem {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.activityItem:hover {
+  background: #edf2f7;
+  border-color: rgba(220, 20, 60, 0.2);
+}
+
+.activityIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.attendanceIcon,
+.expenseIcon {
+  font-size: 18px;
+}
+
+.activityContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 16px;
+}
+
+.activityTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.activityMeta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #718096;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.activityTime {
+  font-weight: 600;
+}
+
+.activityDescription {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+.activityFooter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.activityStatus {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activityStatus.draft {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.activityStatus.pending {
+  background: #feebc8;
+  color: #dd6b20;
+}
+
+.activityStatus.submitted {
+  background: #c6f6d5;
+  color: #2f855a;
+}
+
+.activityStatus.completed {
+  background: #bee3f8;
+  color: #2b6cb0;
+}
+
+.manualBadge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #e6fffa;
+  color: #234e52;
+}
+
+/* Quick Actions Section */
+.quickActionsSection {
+  margin-bottom: 40px;
+}
+
+.quickActionsSection .sectionTitle {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.quickActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.quickActionCard {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(220, 20, 60, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.quickActionCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.quickActionCard:hover::before {
+  transform: scaleX(1);
+}
+
+.quickActionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(220, 20, 60, 0.15);
+}
+
+.quickActionIcon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(220, 20, 60, 0.1) 0%,
+    rgba(185, 28, 60, 0.1) 100%
+  );
+  border-radius: 16px;
+  display: inline-block;
+}
+
+.quickActionCard h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.quickActionCard p {
+  margin: 0;
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 15px;
+  }
+
+  .welcomeSection {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .currentTime {
+    text-align: center;
+  }
+
+  .timeDisplay {
+    font-size: 28px;
+  }
+
+  .welcomeContent h1 {
+    font-size: 24px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .metricCard {
+    padding: 20px;
+  }
+
+  .statusDetails {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .activityHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .activityMeta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .quickActionsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .activitiesSection,
+  .currentStatusCard,
+  .welcomeSection {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 10px;
+  }
+
+  .welcomeContent h1 {
+    font-size: 20px;
+  }
+
+  .welcomeSubtitle {
+    font-size: 14px;
+  }
+
+  .timeDisplay {
+    font-size: 24px;
+  }
+
+  .metricValue {
+    font-size: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .activitiesSection,
+  .currentStatusCard,
+  .welcomeSection {
+    padding: 16px;
+  }
+
+  .metricCard {
+    padding: 16px;
+  }
+
+  .activityItem {
+    padding: 16px;
+  }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .dashboardContainer {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
+
+  .welcomeSection,
+  .metricCard,
+  .activitiesSection,
+  .quickActionCard {
+    background: #2d3748;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+  }
+
+  .welcomeContent h1,
+  .metricValue,
+  .sectionTitle,
+  .activityTitle {
+    color: #e2e8f0;
+  }
+
+  .welcomeSubtitle,
+  .metricLabel,
+  .metricSubtext,
+  .sectionSubtitle,
+  .activityDescription {
+    color: #a0aec0;
+  }
+
+  .timeDisplay {
+    color: #e2e8f0;
+  }
+
+  .activityItem {
+    background: #4a5568;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .activityItem:hover {
+    background: #718096;
+  }
+
+  .activityIcon {
+    background: #2d3748;
+  }
+}

@@ -1,0 +1,296 @@
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 20vh;
+  padding: 40px 20px;
+}
+
+.checkInButton {
+  padding: 20px 40px;
+  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-width: 160px;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
+}
+.checkInButton2 {
+  padding: 20px 40px;
+  background: linear-gradient(135deg, green 0%, green 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-width: 160px;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
+}
+.checkInButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(220, 20, 60, 0.4);
+}
+.checkInButton2:hover {
+  transform: translateY(-3px);
+  /* box-shadow: 0 5px 20px rgb(28, 206, 28); */
+}
+
+.checkInButton:active {
+  transform: translateY(-1px);
+}
+.checkInButton2:active {
+  transform: translateY(-1px);
+}
+
+.checkInButton::before,
+.checkInButton2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.checkInButton:hover::before {
+  left: 100%;
+}
+.checkInButton2:hover::before {
+  left: 100%;
+}
+
+.checkInContainers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px 40px;
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.userData {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.userData:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.userField {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userField:last-child {
+  margin-bottom: 0;
+}
+
+.userField:hover {
+  border-color: crimson;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+  transform: translateY(-1px);
+}
+
+.userField strong {
+  color: #333;
+  font-weight: 600;
+  min-width: 120px;
+  letter-spacing: -0.3px;
+}
+
+.userField:nth-child(1) strong {
+  color: crimson;
+}
+
+.userField:nth-child(2) strong {
+  color: #667eea;
+}
+
+.userField:nth-child(3) strong {
+  color: #764ba2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .buttonContainer {
+    min-height: 30vh;
+    padding: 30px 15px;
+  }
+
+  .checkInButton {
+    padding: 16px 32px;
+    font-size: 16px;
+    min-width: 140px;
+  }
+
+  .checkInContainers {
+    padding: 0 15px 30px;
+  }
+
+  .userData {
+    padding: 25px 20px;
+    max-width: 100%;
+  }
+
+  .userField {
+    padding: 14px 16px;
+    font-size: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .userField strong {
+    min-width: auto;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .buttonContainer {
+    min-height: 25vh;
+    padding: 20px 10px;
+  }
+
+  .checkInButton {
+    padding: 14px 28px;
+    font-size: 15px;
+    min-width: 120px;
+  }
+
+  .checkInContainers {
+    padding: 0 10px 20px;
+  }
+
+  .userData {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
+
+  .userField {
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+
+  .userField strong {
+    font-size: 13px;
+  }
+}
+
+/* Additional enhancement for better visual hierarchy */
+.userData::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, crimson 0%, #667eea 50%, #764ba2 100%);
+  border-radius: 22px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.userData {
+  position: relative;
+}
+
+.userData:hover::before {
+  opacity: 0.1;
+}
+.checkInButton:disabled,
+.checkInButton2:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.checkInButton:disabled:hover,
+.checkInButton2:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
+}
+.errorContainer {
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 15px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.errorMessage {
+  color: #c33;
+  font-weight: 500;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.successContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 15px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.successMessage {
+  color: #155724;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
