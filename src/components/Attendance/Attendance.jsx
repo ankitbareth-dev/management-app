@@ -5,30 +5,64 @@ import { useEffect, useState } from "react";
 import { Geolocation } from "@capacitor/geolocation";
 import { Capacitor } from "@capacitor/core";
 
-const getCurrentPosition = async () => {
+// Add this function to request permissions
+const requestLocationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
-    // Use Capacitor's geolocation for mobile
-    const coordinates = await Geolocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 10000,
-    });
-    return {
-      latitude: coordinates.coords.latitude,
-      longitude: coordinates.coords.longitude,
-    };
-  } else {
-    // Use browser's geolocation for web
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) =>
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }),
-        reject,
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    });
+    try {
+      const permission = await Geolocation.requestPermissions();
+      return permission.location === "granted";
+    } catch (error) {
+      console.error("Permission request failed:", error);
+      return false;
+    }
+  }
+  return true; // Web doesn't need explicit permission request
+};
+
+// Update getCurrentPosition function
+const getCurrentPosition = async () => {
+  try {
+    if (Capacitor.isNativePlatform()) {
+      // Check and request permissions first
+      const hasPermission = await requestLocationPermission();
+      if (!hasPermission) {
+        throw new Error(
+          "Location permission denied. Please enable location access in your device settings."
+        );
+      }
+
+      const coordinates = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      });
+
+      return {
+        latitude: coordinates.coords.latitude,
+        longitude: coordinates.coords.longitude,
+      };
+    } else {
+      // Web fallback
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          reject(new Error("Geolocation is not supported"));
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (position) =>
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            }),
+          (error) =>
+            reject(new Error("Failed to get location: " + error.message)),
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      });
+    }
+  } catch (error) {
+    throw new Error("Location access failed: " + error.message);
   }
 };
 
@@ -50,7 +84,7 @@ const CheckIn = () => {
   }, [successMessage]);
 
   const handleToggle = async () => {
-    setError(""); // Clear previous errors
+    setError("");
     setSuccessMessage("");
 
     if (!isCheckedIn) {
@@ -62,15 +96,30 @@ const CheckIn = () => {
           position.longitude
         );
         await checkIn(location, position);
+        setSuccessMessage("✅ Checked in successfully!");
       } catch (error) {
         console.error("Error during check-in:", error);
-        setError(
-          "Location access is required for check-in. Please enable location services in your device settings."
-        );
+        let errorMessage = "Failed to check-in. ";
+
+        if (
+          error.message.includes("permission") ||
+          error.message.includes("denied")
+        ) {
+          errorMessage +=
+            "Please go to your device Settings > Apps > [Your App Name] > Permissions and enable Location access.";
+        } else if (error.message.includes("location")) {
+          errorMessage +=
+            "Please ensure location services are enabled on your device and try again.";
+        } else {
+          errorMessage += error.message;
+        }
+
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
     } else {
+      // Similar logic for check-out
       setIsLoading(true);
       try {
         const position = await getCurrentPosition();
@@ -79,7 +128,7 @@ const CheckIn = () => {
       } catch (error) {
         console.error("Error during check-out:", error);
         setError(
-          "Location access is required for check-out. Please enable location services in your device settings."
+          "Failed to check-out. Please ensure location services are enabled."
         );
       } finally {
         setIsLoading(false);
