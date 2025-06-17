@@ -2,6 +2,35 @@ import Navbar from "../Navbar/Navbar";
 import styles from "./Attendance.module.css";
 import { useAppContext } from "../../store/AppContext";
 import { useEffect, useState } from "react";
+import { Geolocation } from "@capacitor/geolocation";
+import { Capacitor } from "@capacitor/core";
+
+const getCurrentPosition = async () => {
+  if (Capacitor.isNativePlatform()) {
+    // Use Capacitor's geolocation for mobile
+    const coordinates = await Geolocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 10000,
+    });
+    return {
+      latitude: coordinates.coords.latitude,
+      longitude: coordinates.coords.longitude,
+    };
+  } else {
+    // Use browser's geolocation for web
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) =>
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }),
+        reject,
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    });
+  }
+};
 
 const CheckIn = () => {
   const [successMessage, setSuccessMessage] = useState("");
@@ -26,62 +55,33 @@ const CheckIn = () => {
 
     if (!isCheckedIn) {
       setIsLoading(true);
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              const { latitude, longitude } = position.coords;
-              const location = await reverseGeocode(latitude, longitude);
-              await checkIn(location, { latitude, longitude }); // Pass coordinates
-            } catch (error) {
-              console.error("Error during check-in:", error);
-              setError(
-                error.message || "Failed to check-in. Please try again."
-              );
-            } finally {
-              setIsLoading(false);
-            }
-          },
-          async (error) => {
-            console.error("Geolocation error:", error);
-            setError(
-              "Location access is required for check-in. Please enable location services."
-            );
-            setIsLoading(false);
-          }
+      try {
+        const position = await getCurrentPosition();
+        const location = await reverseGeocode(
+          position.latitude,
+          position.longitude
         );
-      } else {
-        setError("Geolocation is not supported by this browser.");
+        await checkIn(location, position);
+      } catch (error) {
+        console.error("Error during check-in:", error);
+        setError(
+          "Location access is required for check-in. Please enable location services in your device settings."
+        );
+      } finally {
         setIsLoading(false);
       }
     } else {
       setIsLoading(true);
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              const { latitude, longitude } = position.coords;
-              await checkOut({ latitude, longitude });
-              setSuccessMessage("✅ Checked out successfully!");
-            } catch (error) {
-              console.error("Error during check-out:", error);
-              setError(
-                error.message || "Failed to check-out. Please try again."
-              );
-            } finally {
-              setIsLoading(false);
-            }
-          },
-          (error) => {
-            console.error("Geolocation error:", error);
-            setError(
-              "Location access is required for check-out. Please enable location services."
-            );
-            setIsLoading(false);
-          }
+      try {
+        const position = await getCurrentPosition();
+        await checkOut(position);
+        setSuccessMessage("✅ Checked out successfully!");
+      } catch (error) {
+        console.error("Error during check-out:", error);
+        setError(
+          "Location access is required for check-out. Please enable location services in your device settings."
         );
-      } else {
-        setError("Geolocation is not supported by this browser.");
+      } finally {
         setIsLoading(false);
       }
     }

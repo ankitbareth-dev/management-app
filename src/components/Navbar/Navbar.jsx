@@ -185,6 +185,16 @@ const Navbar = () => {
               {/* Mobile Attendance Dropdown */}
               <div className={styles.mobileAttendanceSection}>
                 <button
+                  className={`${styles.navLink} ${
+                    location.pathname === "/dashboard"
+                      ? styles.activeNavLink
+                      : ""
+                  }`}
+                  onClick={() => handleNavigation("/dashboard")}
+                >
+                  Dashboard
+                </button>
+                <button
                   className={`${styles.mobileNavLink} ${
                     location.pathname === "/attendance" ||
                     location.pathname === "/manual-attendance"
