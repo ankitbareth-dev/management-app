@@ -9,40 +9,59 @@ import { Capacitor } from "@capacitor/core";
 const requestLocationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
     try {
+      console.log("🔍 Requesting location permission...");
       const permission = await Geolocation.requestPermissions();
-      return permission.location === "granted";
+      console.log("📋 Permission result:", permission);
+
+      const isGranted = permission.location === "granted";
+      console.log("✅ Permission granted:", isGranted);
+      return isGranted;
     } catch (error) {
-      console.error("Permission request failed:", error);
+      console.error("❌ Permission request failed:", error);
       return false;
     }
   }
-  return true; // Web doesn't need explicit permission request
+  console.log("🌐 Web platform - no permission request needed");
+  return true;
 };
 
 // Update getCurrentPosition function
 const getCurrentPosition = async () => {
   try {
+    console.log("📍 Getting current position...");
+    console.log("📱 Is native platform:", Capacitor.isNativePlatform());
+
     if (Capacitor.isNativePlatform()) {
-      // Check and request permissions first
-      const hasPermission = await requestLocationPermission();
-      if (!hasPermission) {
-        throw new Error(
-          "Location permission denied. Please enable location access in your device settings."
-        );
+      // Check current permission status first
+      console.log("🔍 Checking current permissions...");
+      const currentPermissions = await Geolocation.checkPermissions();
+      console.log("📋 Current permissions:", currentPermissions);
+
+      if (currentPermissions.location !== "granted") {
+        console.log("⚠️ Permission not granted, requesting...");
+        const hasPermission = await requestLocationPermission();
+        if (!hasPermission) {
+          throw new Error("Location permission denied");
+        }
+      } else {
+        console.log("✅ Permission already granted");
       }
 
+      console.log("🎯 Getting coordinates...");
       const coordinates = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       });
 
+      console.log("📍 Coordinates received:", coordinates);
       return {
         latitude: coordinates.coords.latitude,
         longitude: coordinates.coords.longitude,
       };
     } else {
       // Web fallback
+      console.log("🌐 Using web geolocation...");
       return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
           reject(new Error("Geolocation is not supported"));
@@ -50,19 +69,24 @@ const getCurrentPosition = async () => {
         }
 
         navigator.geolocation.getCurrentPosition(
-          (position) =>
+          (position) => {
+            console.log("📍 Web position received:", position);
             resolve({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-            }),
-          (error) =>
-            reject(new Error("Failed to get location: " + error.message)),
+            });
+          },
+          (error) => {
+            console.error("❌ Web geolocation error:", error);
+            reject(new Error("Failed to get location: " + error.message));
+          },
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
       });
     }
   } catch (error) {
-    throw new Error("Location access failed: " + error.message);
+    console.error("❌ getCurrentPosition error:", error);
+    throw error;
   }
 };
 
@@ -78,8 +102,7 @@ const CheckIn = () => {
       const timer = setTimeout(() => {
         setSuccessMessage("");
       }, 2000);
-
-      return () => clearTimeout(timer); // Cleanup timer
+      return () => clearTimeout(timer);
     }
   }, [successMessage]);
 
@@ -87,18 +110,25 @@ const CheckIn = () => {
     setError("");
     setSuccessMessage("");
 
+    console.log("🚀 Handle toggle called, isCheckedIn:", isCheckedIn);
+
     if (!isCheckedIn) {
       setIsLoading(true);
       try {
+        console.log("⏰ Starting check-in process...");
         const position = await getCurrentPosition();
+        console.log("📍 Position obtained:", position);
+
         const location = await reverseGeocode(
           position.latitude,
           position.longitude
         );
+        console.log("🏠 Location geocoded:", location);
+
         await checkIn(location, position);
         setSuccessMessage("✅ Checked in successfully!");
       } catch (error) {
-        console.error("Error during check-in:", error);
+        console.error("❌ Check-in error details:", error);
         let errorMessage = "Failed to check-in. ";
 
         if (
@@ -113,20 +143,21 @@ const CheckIn = () => {
         } else {
           errorMessage += error.message;
         }
-
         setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
     } else {
-      // Similar logic for check-out
       setIsLoading(true);
       try {
+        console.log("⏰ Starting check-out process...");
         const position = await getCurrentPosition();
+        console.log("📍 Check-out position obtained:", position);
+
         await checkOut(position);
         setSuccessMessage("✅ Checked out successfully!");
       } catch (error) {
-        console.error("Error during check-out:", error);
+        console.error("❌ Check-out error details:", error);
         setError(
           "Failed to check-out. Please ensure location services are enabled."
         );
@@ -139,6 +170,7 @@ const CheckIn = () => {
   // Convert coordinates to readable address
   const reverseGeocode = async (latitude, longitude) => {
     try {
+      console.log("🌍 Reverse geocoding:", latitude, longitude);
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
         {
@@ -147,12 +179,12 @@ const CheckIn = () => {
           },
         }
       );
-
       if (!response.ok) {
         throw new Error("Geocoding service unavailable");
       }
-
       const data = await response.json();
+      console.log("🌍 Geocoding response:", data);
+
       if (data && data.address) {
         const { city, state, country, town, village, county } = data.address;
         const locationParts = [
@@ -164,7 +196,7 @@ const CheckIn = () => {
       }
       throw new Error("Address not found");
     } catch (error) {
-      console.error("Reverse geocoding error:", error);
+      console.error("❌ Reverse geocoding error:", error);
       return "Location not available";
     }
   };
@@ -176,10 +208,9 @@ const CheckIn = () => {
         <button
           className={isCheckedIn ? styles.checkInButton : styles.checkInButton2}
           onClick={handleToggle}
-          disabled={isLoading} // Add this line
+          disabled={isLoading}
         >
-          {isLoading ? "Processing..." : isCheckedIn ? "Check-Out" : "Check-In"}{" "}
-          {/* Update this line */}
+          {isLoading ? "Processing..." : isCheckedIn ? "Check-Out" : "Check-In"}
         </button>
       </div>
       {error && (
