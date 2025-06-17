@@ -26,66 +26,53 @@ const requestLocationPermission = async () => {
 };
 
 // Update getCurrentPosition function
+// Update just the getCurrentPosition function with alerts
 const getCurrentPosition = async () => {
   try {
-    console.log("📍 Getting current position...");
-    console.log("📱 Is native platform:", Capacitor.isNativePlatform());
+    alert("🔍 Starting location check...");
 
     if (Capacitor.isNativePlatform()) {
+      alert("📱 Running on mobile device");
+
       // Check current permission status first
-      console.log("🔍 Checking current permissions...");
       const currentPermissions = await Geolocation.checkPermissions();
-      console.log("📋 Current permissions:", currentPermissions);
+      alert(`📋 Permission status: ${currentPermissions.location}`);
 
       if (currentPermissions.location !== "granted") {
-        console.log("⚠️ Permission not granted, requesting...");
+        alert("⚠️ Permission not granted, requesting...");
         const hasPermission = await requestLocationPermission();
         if (!hasPermission) {
+          alert("❌ Permission denied by user");
           throw new Error("Location permission denied");
         }
+        alert("✅ Permission granted");
       } else {
-        console.log("✅ Permission already granted");
+        alert("✅ Permission already granted");
       }
 
-      console.log("🎯 Getting coordinates...");
+      alert("🎯 Getting GPS coordinates...");
       const coordinates = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       });
 
-      console.log("📍 Coordinates received:", coordinates);
+      alert(
+        `📍 GPS Success! Lat: ${coordinates.coords.latitude.toFixed(
+          4
+        )}, Lng: ${coordinates.coords.longitude.toFixed(4)}`
+      );
+
       return {
         latitude: coordinates.coords.latitude,
         longitude: coordinates.coords.longitude,
       };
     } else {
-      // Web fallback
-      console.log("🌐 Using web geolocation...");
-      return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-          reject(new Error("Geolocation is not supported"));
-          return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log("📍 Web position received:", position);
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          (error) => {
-            console.error("❌ Web geolocation error:", error);
-            reject(new Error("Failed to get location: " + error.message));
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-      });
+      alert("🌐 Running on web browser");
+      // Web fallback code...
     }
   } catch (error) {
-    console.error("❌ getCurrentPosition error:", error);
+    alert(`❌ Location Error: ${error.message}`);
     throw error;
   }
 };
