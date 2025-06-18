@@ -692,6 +692,7 @@ export const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
+      alert(error);
       console.error("Error during check-in:", error);
       throw error;
     }
