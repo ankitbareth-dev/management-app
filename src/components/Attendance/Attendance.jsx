@@ -122,11 +122,9 @@ const CheckIn = () => {
           error.message.includes("permission") ||
           error.message.includes("denied")
         ) {
-          errorMessage +=
-            "Please go to your device Settings > Apps > [Your App Name] > Permissions and enable Location access.";
+          errorMessage += "Hello World Again";
         } else if (error.message.includes("location")) {
-          errorMessage +=
-            "Please ensure location services are enabled on your device and try again.";
+          errorMessage += "Hello World";
         } else {
           errorMessage += error.message;
         }
