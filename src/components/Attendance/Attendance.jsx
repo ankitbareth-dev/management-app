@@ -115,6 +115,7 @@ const CheckIn = () => {
         await checkIn(location, position);
         setSuccessMessage("✅ Checked in successfully!");
       } catch (error) {
+        alert(error.message);
         console.error("❌ Check-in error details:", error);
         let errorMessage = "Failed to check-in. ";
 

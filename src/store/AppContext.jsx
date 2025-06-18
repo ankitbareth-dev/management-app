@@ -675,7 +675,7 @@ export const AppProvider = ({ children }) => {
             ASSIGNED_COORDINATES.longitude
           );
           throw new Error(
-            `You are not at the assigned location. You are ${Math.round(
+            `You are not at the assigned. You are ${Math.round(
               distance
             )} meters away from the allowed check-in area.`
           );
@@ -692,7 +692,6 @@ export const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      alert(error);
       console.error("Error during check-in:", error);
       throw error;
     }
