@@ -2,8 +2,8 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 import { getAccurateTime } from "../services/timeService";
 
 const ASSIGNED_COORDINATES = {
-  latitude: 32.356806,
-  longitude: 82.620425,
+  latitude: 23.137225,
+  longitude: 72.552167,
 };
 
 const ALLOWED_DISTANCE_METERS = 100;
