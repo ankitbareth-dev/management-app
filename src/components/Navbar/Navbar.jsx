@@ -4,42 +4,29 @@ import { useAppContext } from "../../store/AppContext";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutDropdownOpen, setIsLogoutDropdownOpen] = useState(false);
   const [isAttendanceDropdownOpen, setIsAttendanceDropdownOpen] =
     useState(false);
+
   const { logout, user } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const toggleLogoutDropdown = () => {
-    setIsLogoutDropdownOpen(!isLogoutDropdownOpen);
-  };
-
-  const toggleAttendanceDropdown = () => {
-    setIsAttendanceDropdownOpen(!isAttendanceDropdownOpen);
-  };
-
   const handleNavigation = (path) => {
     navigate(path);
-    setIsMenuOpen(false);
+    setIsAttendanceDropdownOpen(false);
   };
 
   const handleLogOut = () => {
     logout();
     navigate("/");
     setIsLogoutDropdownOpen(false);
-    setIsMenuOpen(false);
   };
 
   const navigationItems = [
-    { path: "/attendance-history", label: "Attendance Details" },
-    { path: "/profile", label: "Profile" },
-    { path: "/expenses", label: "Expenses" },
+    { path: "/attendance-history", label: "History", icon: "📊" },
+    { path: "/profile", label: "Profile", icon: "👤" },
+    { path: "/expenses", label: "Expenses", icon: "💰" },
   ];
 
   const getHeaderText = () => {
@@ -47,63 +34,49 @@ const Navbar = () => {
       "/dashboard": "Dashboard",
       "/attendance": "Attendance",
       "/manual-attendance": "Manual Attendance",
-      "/attendance-history": "Attendance History",
+      "/attendance-history": "History",
       "/expenses": "Expenses",
       "/profile": "Profile",
     };
     return pathMap[location.pathname] || "Dashboard";
   };
 
-  // Mobile bottom navigation items with icons
   const mobileNavItems = [
-    {
-      path: "/dashboard",
-      label: "Home",
-      icon: "🏠",
-    },
-    {
-      path: "/attendance",
-      label: "Attendance",
-      icon: "⏰",
-    },
-    {
-      path: "/expenses",
-      label: "Expenses",
-      icon: "💰",
-    },
-    {
-      path: "/attendance-history",
-      label: "History",
-      icon: "📊",
-    },
-    {
-      path: "/profile",
-      label: "Profile",
-      icon: "👤",
-    },
+    { path: "/dashboard", label: "Home", icon: "🏠" },
+    { path: "/attendance", label: "Attendance", icon: "⏰" },
+    { path: "/expenses", label: "Expenses", icon: "💰" },
+    { path: "/attendance-history", label: "History", icon: "📊" },
+    { path: "/profile", label: "Profile", icon: "👤" },
   ];
 
   return (
     <>
-      {/* Desktop Navbar - unchanged */}
+      {/* Desktop & Mobile Navbar */}
       <nav className={styles.navbar}>
-        {/* Logo/Title Section */}
+        {/* Desktop Logo Section */}
         <div className={styles.logoSection}>
-          <h1 className={styles.title}>{getHeaderText()}</h1>
+          <div className={styles.brandContainer}>
+            <div className={styles.brandIcon}>⚡</div>
+            <h1 className={styles.title}>{getHeaderText()}</h1>
+          </div>
         </div>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation */}
         <div className={styles.desktopNav}>
           <div className={styles.navLinks}>
+            {/* Dashboard */}
             <button
               className={`${styles.navLink} ${
                 location.pathname === "/dashboard" ? styles.activeNavLink : ""
               }`}
               onClick={() => handleNavigation("/dashboard")}
             >
+              <span className={styles.navIcon}>🏠</span>
               Dashboard
             </button>
-            <div className={styles.attendanceContainer}>
+
+            {/* Attendance Dropdown */}
+            <div className={styles.dropdownContainer}>
               <button
                 className={`${styles.navLink} ${
                   location.pathname === "/attendance" ||
@@ -111,8 +84,11 @@ const Navbar = () => {
                     ? styles.activeNavLink
                     : ""
                 }`}
-                onClick={toggleAttendanceDropdown}
+                onClick={() =>
+                  setIsAttendanceDropdownOpen(!isAttendanceDropdownOpen)
+                }
               >
+                <span className={styles.navIcon}>⏰</span>
                 Attendance
                 <span
                   className={`${styles.arrow} ${
@@ -122,30 +98,28 @@ const Navbar = () => {
                   ▼
                 </span>
               </button>
+
               {isAttendanceDropdownOpen && (
-                <div className={styles.attendanceDropdown}>
+                <div className={styles.dropdown}>
                   <button
-                    className={styles.attendanceItem}
-                    onClick={() => {
-                      handleNavigation("/attendance");
-                      setIsAttendanceDropdownOpen(false);
-                    }}
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigation("/attendance")}
                   >
+                    <span>⏰</span>
                     Regular Attendance
                   </button>
                   <button
-                    className={styles.attendanceItem}
-                    onClick={() => {
-                      handleNavigation("/manual-attendance");
-                      setIsAttendanceDropdownOpen(false);
-                    }}
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigation("/manual-attendance")}
                   >
+                    <span>✏️</span>
                     Manual Attendance
                   </button>
                 </div>
               )}
             </div>
-            {/* Other navigation items */}
+
+            {/* Other Navigation Items */}
             {navigationItems.map((item) => (
               <button
                 key={item.path}
@@ -154,17 +128,21 @@ const Navbar = () => {
                 }`}
                 onClick={() => handleNavigation(item.path)}
               >
+                <span className={styles.navIcon}>{item.icon}</span>
                 {item.label}
               </button>
             ))}
           </div>
-          {/* Desktop Logout Dropdown */}
-          <div className={styles.logoutContainer}>
+
+          {/* User Profile Dropdown */}
+          <div className={styles.dropdownContainer}>
             <button
               className={styles.userButton}
-              onClick={toggleLogoutDropdown}
+              onClick={() => setIsLogoutDropdownOpen(!isLogoutDropdownOpen)}
             >
-              <span className={styles.userIcon}>👤</span>
+              <div className={styles.userAvatar}>
+                {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              </div>
               <span className={styles.userName}>{user?.name || "User"}</span>
               <span
                 className={`${styles.arrow} ${
@@ -174,9 +152,10 @@ const Navbar = () => {
                 ▼
               </span>
             </button>
+
             {isLogoutDropdownOpen && (
-              <div className={styles.logoutDropdown}>
-                <button className={styles.logoutItem} onClick={handleLogOut}>
+              <div className={styles.dropdown}>
+                <button className={styles.dropdownItem} onClick={handleLogOut}>
                   <span>🚪</span>
                   Logout
                 </button>
@@ -185,11 +164,14 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Header - only title and logout */}
+        {/* Mobile Header */}
         <div className={styles.mobileHeader}>
-          <h1 className={styles.mobileTitle}>{getHeaderText()}</h1>
+          <div className={styles.mobileBrand}>
+            <div className={styles.brandIcon}>⚡</div>
+            <h1 className={styles.mobileTitle}>{getHeaderText()}</h1>
+          </div>
           <button className={styles.mobileLogoutBtn} onClick={handleLogOut}>
-            <span>🚪</span>
+            🚪
           </button>
         </div>
       </nav>
@@ -209,29 +191,6 @@ const Navbar = () => {
           </button>
         ))}
       </div>
-
-      {/* Mobile Attendance Options Modal */}
-      {location.pathname === "/attendance" && (
-        <div className={styles.mobileAttendanceModal}>
-          <div className={styles.modalContent}>
-            <h3>Attendance Options</h3>
-            <button
-              className={styles.modalOption}
-              onClick={() => handleNavigation("/attendance")}
-            >
-              <span>⏰</span>
-              Regular Attendance
-            </button>
-            <button
-              className={styles.modalOption}
-              onClick={() => handleNavigation("/manual-attendance")}
-            >
-              <span>✏️</span>
-              Manual Attendance
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };
