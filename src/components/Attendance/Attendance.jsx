@@ -9,12 +9,10 @@ import { Capacitor } from "@capacitor/core";
 const requestLocationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
     try {
-      console.log("🔍 Requesting location permission...");
       const permission = await Geolocation.requestPermissions();
-      console.log("📋 Permission result:", permission);
 
       const isGranted = permission.location === "granted";
-      console.log("✅ Permission granted:", isGranted);
+
       return isGranted;
     } catch (error) {
       console.error("❌ Permission request failed:", error);
@@ -29,46 +27,28 @@ const requestLocationPermission = async () => {
 // Update just the getCurrentPosition function with alerts
 const getCurrentPosition = async () => {
   try {
-    alert("🔍 Starting location check...");
-
     if (Capacitor.isNativePlatform()) {
-      alert("📱 Running on mobile device");
-
       // Check current permission status first
       const currentPermissions = await Geolocation.checkPermissions();
-      alert(`📋 Permission status: ${currentPermissions.location}`);
 
       if (currentPermissions.location !== "granted") {
-        alert("⚠️ Permission not granted, requesting...");
         const hasPermission = await requestLocationPermission();
         if (!hasPermission) {
-          alert("❌ Permission denied by user");
           throw new Error("Location permission denied");
         }
-        alert("✅ Permission granted");
-      } else {
-        alert("✅ Permission already granted");
       }
 
-      alert("🎯 Getting GPS coordinates...");
       const coordinates = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       });
 
-      alert(
-        `📍 GPS Success! Lat: ${coordinates.coords.latitude.toFixed(
-          4
-        )}, Lng: ${coordinates.coords.longitude.toFixed(4)}`
-      );
-
       return {
         latitude: coordinates.coords.latitude,
         longitude: coordinates.coords.longitude,
       };
     } else {
-      alert("🌐 Running on web browser");
       // Web fallback code...
     }
   } catch (error) {
@@ -115,7 +95,6 @@ const CheckIn = () => {
         await checkIn(location, position);
         setSuccessMessage("✅ Checked in successfully!");
       } catch (error) {
-        alert(error.message);
         console.error("❌ Check-in error details:", error);
         let errorMessage = "Failed to check-in. ";
 
