@@ -2,19 +2,48 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../store/AppContext";
 import styles from "./Auth.module.css";
+import axios from "axios";
 
 const Auth = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const { login } = useAppContext();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data) => {
+    try {
+      console.log("Attempting login with:", data.email);
 
-    // Use context login function instead of localStorage directly
-    login(data);
+      const config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "/api/odoo_connect",
+        headers: {
+          db: "eduquity",
+          login: data.email,
+          password: data.password,
+          credentials: "include",
+        },
+        data: "",
+      };
 
-    navigate("/dashboard");
+      const response = await axios.request(config);
+      console.log("API Response:", response.data);
+
+      if (response.data.Status === "auth successful") {
+        const userData = {
+          name: response.data.User,
+          email: data.email,
+          apiKey: response.data["api-key"],
+        };
+        login(userData);
+        navigate("/dashboard");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert(`Login failed: ${error.response?.data?.message || error.message}`);
+    }
   };
 
   return (

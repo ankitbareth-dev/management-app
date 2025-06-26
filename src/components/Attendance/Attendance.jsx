@@ -10,9 +10,7 @@ const requestLocationPermission = async () => {
   if (Capacitor.isNativePlatform()) {
     try {
       const permission = await Geolocation.requestPermissions();
-
       const isGranted = permission.location === "granted";
-
       return isGranted;
     } catch (error) {
       console.error("❌ Permission request failed:", error);
@@ -24,26 +22,21 @@ const requestLocationPermission = async () => {
 };
 
 // Update getCurrentPosition function
-// Update just the getCurrentPosition function with alerts
 const getCurrentPosition = async () => {
   try {
     if (Capacitor.isNativePlatform()) {
-      // Check current permission status first
       const currentPermissions = await Geolocation.checkPermissions();
-
       if (currentPermissions.location !== "granted") {
         const hasPermission = await requestLocationPermission();
         if (!hasPermission) {
           throw new Error("Location permission denied");
         }
       }
-
       const coordinates = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       });
-
       return {
         latitude: coordinates.coords.latitude,
         longitude: coordinates.coords.longitude,
@@ -76,7 +69,6 @@ const CheckIn = () => {
   const handleToggle = async () => {
     setError("");
     setSuccessMessage("");
-
     console.log("🚀 Handle toggle called, isCheckedIn:", isCheckedIn);
 
     if (!isCheckedIn) {
@@ -85,19 +77,16 @@ const CheckIn = () => {
         console.log("⏰ Starting check-in process...");
         const position = await getCurrentPosition();
         console.log("📍 Position obtained:", position);
-
         const location = await reverseGeocode(
           position.latitude,
           position.longitude
         );
         console.log("🏠 Location geocoded:", location);
-
         await checkIn(location, position);
         setSuccessMessage("✅ Checked in successfully!");
       } catch (error) {
         console.error("❌ Check-in error details:", error);
         let errorMessage = "Failed to check-in. ";
-
         if (
           error.message.includes("permission") ||
           error.message.includes("denied")
@@ -118,7 +107,6 @@ const CheckIn = () => {
         console.log("⏰ Starting check-out process...");
         const position = await getCurrentPosition();
         console.log("📍 Check-out position obtained:", position);
-
         await checkOut(position);
         setSuccessMessage("✅ Checked out successfully!");
       } catch (error) {
@@ -149,7 +137,6 @@ const CheckIn = () => {
       }
       const data = await response.json();
       console.log("🌍 Geocoding response:", data);
-
       if (data && data.address) {
         const { city, state, country, town, village, county } = data.address;
         const locationParts = [
@@ -169,41 +156,56 @@ const CheckIn = () => {
   return (
     <>
       <Navbar />
-      <div className={styles.buttonContainer}>
-        <button
-          className={isCheckedIn ? styles.checkInButton : styles.checkInButton2}
-          onClick={handleToggle}
-          disabled={isLoading}
-        >
-          {isLoading ? "Processing..." : isCheckedIn ? "Check-Out" : "Check-In"}
-        </button>
-      </div>
-      {error && (
-        <div className={styles.errorContainer}>
-          <p className={styles.errorMessage}>{error}</p>
-        </div>
-      )}
-      {successMessage && (
-        <div className={styles.successContainer}>
-          <p className={styles.successMessage}>{successMessage}</p>
-        </div>
-      )}
-      {(isCheckedIn || currentCheckInTime) && (
-        <div className={styles.checkInContainers}>
-          <div className={styles.userData}>
-            <div className={styles.userField}>
-              <strong>Email:</strong> {user?.email || ""}
-            </div>
-            <div className={styles.userField}>
-              <strong>Check-In Time:</strong> {currentCheckInTime || ""}
-            </div>
-            <div className={styles.userField}>
-              <strong>Status:</strong>{" "}
-              {isCheckedIn ? "Checked In" : "Checked Out"}
-            </div>
+      <div className={styles.attendanceContainer}>
+        <div className={styles.attendanceCard}>
+          <div className={styles.buttonContainer}>
+            <button
+              className={
+                isCheckedIn ? styles.checkInButton : styles.checkInButton2
+              }
+              onClick={handleToggle}
+              disabled={isLoading}
+            >
+              {isLoading
+                ? "Processing..."
+                : isCheckedIn
+                ? "Check-Out"
+                : "Check-In"}
+            </button>
           </div>
+
+          {error && (
+            <div className={styles.errorContainer}>
+              <p className={styles.errorMessage}>{error}</p>
+            </div>
+          )}
+
+          {successMessage && (
+            <div className={styles.successContainer}>
+              <p className={styles.successMessage}>{successMessage}</p>
+            </div>
+          )}
+
+          {(isCheckedIn || currentCheckInTime) && (
+            <div className={styles.checkInContainers}>
+              <div className={styles.userData}>
+                <div className={styles.userField}>
+                  <strong>Email</strong>
+                  {user?.email || ""}
+                </div>
+                <div className={styles.userField}>
+                  <strong>Check-In Time</strong>
+                  {currentCheckInTime || ""}
+                </div>
+                <div className={styles.userField}>
+                  <strong>Status</strong>
+                  {isCheckedIn ? "Checked In" : "Checked Out"}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 };

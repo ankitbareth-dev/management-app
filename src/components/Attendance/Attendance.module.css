@@ -1,55 +1,64 @@
+/* Main container with dark theme matching auth */
+.attendanceContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f23;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendanceContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, #ff6b6b22 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, #4ecdc422 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, #45b7d122 0%, transparent 50%);
+}
+
+/* Main card container */
+.attendanceCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
+  padding: 60px 50px;
+  width: 100%;
+  max-width: 450px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Button container */
 .buttonContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 20vh;
-  padding: 40px 20px;
+  margin-bottom: 40px;
 }
 
-.checkInButton {
-  padding: 20px 40px;
-  background: linear-gradient(135deg, crimson 0%, #b91c3c 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  min-width: 160px;
-  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
-}
+/* Check-in/out buttons */
+.checkInButton,
 .checkInButton2 {
-  padding: 20px 40px;
-  background: linear-gradient(135deg, green 0%, green 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  padding: 20px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   overflow: hidden;
-  min-width: 160px;
-  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
-}
-.checkInButton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(220, 20, 60, 0.4);
-}
-.checkInButton2:hover {
-  transform: translateY(-3px);
-  /* box-shadow: 0 5px 20px rgb(28, 206, 28); */
-}
-
-.checkInButton:active {
-  transform: translateY(-1px);
-}
-.checkInButton2:active {
-  transform: translateY(-1px);
+  cursor: pointer;
 }
 
 .checkInButton::before,
@@ -60,34 +69,88 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s;
+  transition: left 0.5s ease;
+  z-index: -1;
 }
 
-.checkInButton:hover::before {
-  left: 100%;
+.checkInButton2::before {
+  background: linear-gradient(90deg, #4ecdc4, #45b7d1);
 }
+
+.checkInButton::before {
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+}
+
+.checkInButton:hover,
+.checkInButton2:hover {
+  border-color: #4ecdc4;
+  box-shadow: 0 0 30px rgba(78, 205, 196, 0.4),
+    inset 0 0 30px rgba(78, 205, 196, 0.1);
+  transform: translateY(-2px);
+}
+
+.checkInButton:hover::before,
 .checkInButton2:hover::before {
-  left: 100%;
+  left: 0;
 }
 
+.checkInButton:active,
+.checkInButton2:active {
+  transform: translateY(0);
+}
+
+.checkInButton:disabled,
+.checkInButton2:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Error and success messages */
+.errorContainer,
+.successContainer {
+  margin-bottom: 30px;
+  padding: 15px;
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.errorContainer {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.successContainer {
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.errorMessage {
+  color: #ff6b6b;
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.successMessage {
+  color: #4ecdc4;
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* User data section */
 .checkInContainers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px 40px;
   animation: slideIn 0.6s ease-out;
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -96,201 +159,53 @@
 }
 
 .userData {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 30px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.userData:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .userField {
-  margin-bottom: 20px;
-  padding: 16px 20px;
-  background: #fff;
-  border: 2px solid #e1e5e9;
-  border-radius: 12px;
+  padding: 20px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   font-size: 16px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  color: #ffffff;
+  transition: all 0.4s ease;
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
-.userField:last-child {
-  margin-bottom: 0;
-}
-
-.userField:hover {
-  border-color: crimson;
-  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
-  transform: translateY(-1px);
+.userField:focus {
+  border-bottom-color: #4ecdc4;
+  box-shadow: 0 4px 20px rgba(78, 205, 196, 0.3);
 }
 
 .userField strong {
-  color: #333;
-  font-weight: 600;
-  min-width: 120px;
-  letter-spacing: -0.3px;
-}
-
-.userField:nth-child(1) strong {
-  color: crimson;
-}
-
-.userField:nth-child(2) strong {
-  color: #667eea;
-}
-
-.userField:nth-child(3) strong {
-  color: #764ba2;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .buttonContainer {
-    min-height: 30vh;
-    padding: 30px 15px;
-  }
-
-  .checkInButton {
-    padding: 16px 32px;
-    font-size: 16px;
-    min-width: 140px;
-  }
-
-  .checkInContainers {
-    padding: 0 15px 30px;
-  }
-
-  .userData {
-    padding: 25px 20px;
-    max-width: 100%;
-  }
-
-  .userField {
-    padding: 14px 16px;
-    font-size: 15px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .userField strong {
-    min-width: auto;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .buttonContainer {
-    min-height: 25vh;
-    padding: 20px 10px;
-  }
-
-  .checkInButton {
-    padding: 14px 28px;
-    font-size: 15px;
-    min-width: 120px;
-  }
-
-  .checkInContainers {
-    padding: 0 10px 20px;
-  }
-
-  .userData {
-    padding: 20px 15px;
-    border-radius: 16px;
-  }
-
-  .userField {
-    padding: 12px 14px;
-    font-size: 14px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-  }
-
-  .userField strong {
-    font-size: 13px;
-  }
-}
-
-/* Additional enhancement for better visual hierarchy */
-.userData::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, crimson 0%, #667eea 50%, #764ba2 100%);
-  border-radius: 22px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.userData {
-  position: relative;
-}
-
-.userData:hover::before {
-  opacity: 0.1;
-}
-.checkInButton:disabled,
-.checkInButton2:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.checkInButton:disabled:hover,
-.checkInButton2:disabled:hover {
-  transform: none;
-  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
-}
-.errorContainer {
-  margin: 20px auto;
-  max-width: 400px;
-  padding: 15px;
-  background-color: #fee;
-  border: 1px solid #fcc;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.errorMessage {
-  color: #c33;
-  font-weight: 500;
-  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   font-size: 14px;
-  line-height: 1.4;
-}
-.successContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
-  max-width: 400px;
-  padding: 15px;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin-bottom: 5px;
 }
 
-.successMessage {
-  color: #155724;
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0;
-  text-align: center;
+/* Responsive */
+@media (max-width: 480px) {
+  .attendanceCard {
+    padding: 40px 30px;
+    border-radius: 24px;
+  }
+
+  .checkInButton,
+  .checkInButton2 {
+    padding: 18px;
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  .userField {
+    font-size: 14px;
+  }
 }
