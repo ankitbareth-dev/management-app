@@ -4,7 +4,7 @@ import { useAppContext } from "../../store/AppContext";
 import styles from "./ManualAttendance.module.css";
 
 const ManualAttendance = () => {
-  const { user, attendanceHistory, addManualAttendance } = useAppContext();
+  const { user, attendanceHistory } = useAppContext();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     email: user?.email || "",
@@ -114,8 +114,14 @@ const ManualAttendance = () => {
   };
 
   const handleConfirmAdd = () => {
-    // Use context to add manual attendance
-    addManualAttendance(submittedData);
+    // Add manual attendance to context (we'll need to implement this action)
+    // For now, we'll add it to localStorage and reload
+    const existingHistory = JSON.parse(localStorage.getItem('attendanceHistory') || '[]');
+    const updatedHistory = [submittedData, ...existingHistory];
+    localStorage.setItem('attendanceHistory', JSON.stringify(updatedHistory));
+    
+    // Reload the page to reflect changes
+    window.location.reload();
     // Reset form and states
     setShowConfirmation(false);
     setFormData({
@@ -237,7 +243,7 @@ const ManualAttendance = () => {
                   className={styles.select}
                 >
                   <option value="checked-in">Checked-in</option>
-                  <option value="checked-in">Checked-out</option>
+                  <option value="checked-out">Checked-out</option>
                 </select>
               </div>
 

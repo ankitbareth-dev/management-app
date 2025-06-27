@@ -1,5 +1,5 @@
 {
-  "name": "login-page",
+  "name": "management-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,29 +10,26 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/android": "^7.3.0",
-    "@capacitor/cli": "^7.3.0",
-    "@capacitor/core": "^7.3.0",
-    "@capacitor/geolocation": "^7.1.2",
-    "@capacitor/ios": "^7.3.0",
-    "@hookform/resolvers": "^5.0.1",
-    "axios": "^1.10.0",
-    "dotenv": "^16.5.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-hook-form": "^7.56.4",
-    "react-router-dom": "^7.6.1",
-    "yup": "^1.6.1"
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/geolocation": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "axios": "^1.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.48.2",
+    "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
-    "eslint": "^9.25.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "vite": "^6.3.5"
+    "@eslint/js": "^9.9.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
+    "vite": "^5.4.2"
   }
 }

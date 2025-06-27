@@ -191,21 +191,72 @@
   margin-bottom: 5px;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .attendanceContainer {
+    min-height: calc(100vh - 80px);
+    padding: 16px;
+    padding-bottom: calc(16px + 80px + env(safe-area-inset-bottom));
+  }
+
   .attendanceCard {
-    padding: 40px 30px;
+    padding: 40px 24px;
     border-radius: 24px;
+    max-width: 100%;
   }
 
   .checkInButton,
   .checkInButton2 {
     padding: 18px;
-    font-size: 14px;
+    font-size: 15px;
     letter-spacing: 2px;
   }
 
   .userField {
+    font-size: 15px;
+    padding: 16px 0;
+  }
+
+  .errorMessage,
+  .successMessage {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .attendanceContainer {
+    min-height: calc(100vh - 140px);
+    padding: 12px;
+    padding-bottom: calc(12px + 80px + env(safe-area-inset-bottom));
+  }
+
+  .attendanceCard {
+    padding: 32px 20px;
+    border-radius: 20px;
+  }
+
+  .checkInButton,
+  .checkInButton2 {
+    padding: 16px;
     font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .userField {
+    font-size: 14px;
+    padding: 14px 0;
+  }
+
+  .userField strong {
+    font-size: 12px;
+  }
+
+  .errorMessage,
+  .successMessage {
+    font-size: 12px;
+  }
+
+  .buttonContainer {
+    margin-bottom: 32px;
   }
 }

@@ -42,10 +42,45 @@ const getCurrentPosition = async () => {
         longitude: coordinates.coords.longitude,
       };
     } else {
-      // Web fallback code...
+      // Web fallback using browser geolocation
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          reject(new Error("Geolocation is not supported by this browser"));
+          return;
+        }
+        
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            let errorMessage = "Location access failed";
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                errorMessage = "Location permission denied";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMessage = "Location information unavailable";
+                break;
+              case error.TIMEOUT:
+                errorMessage = "Location request timed out";
+                break;
+            }
+            reject(new Error(errorMessage));
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 10000,
+          }
+        );
+      });
     }
   } catch (error) {
-    alert(`❌ Location Error: ${error.message}`);
+    console.error(`Location Error: ${error.message}`);
     throw error;
   }
 };
@@ -91,9 +126,9 @@ const CheckIn = () => {
           error.message.includes("permission") ||
           error.message.includes("denied")
         ) {
-          errorMessage += "Hello World Again";
+          errorMessage += "Please allow location access in your browser settings.";
         } else if (error.message.includes("location")) {
-          errorMessage += "Hello World";
+          errorMessage += "Please enable location services and try again.";
         } else {
           errorMessage += error.message;
         }

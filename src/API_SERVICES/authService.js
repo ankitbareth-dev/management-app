@@ -1,4 +1,4 @@
-import { apiRequest } from "../API_CONFIG";
+import { apiRequest } from "../API_CONFIG/api.js";
 
 export const authService = {
   // Login API call
